@@ -1,21 +1,7 @@
 {
+	"extends": "../common-all/tsconfigs/tsconfig.base.common",
 	"include": ["src/**/*"],
-	"exclude": ["node_modules"],
 	"compilerOptions": {
-		"outDir": "dist",
-		"skipLibCheck": true,
-		"moduleResolution": "node",
-		"module": "ESNext",
-		"removeComments": true,
-		"target": "ESNext",
-		"strict": true,
-		"noImplicitAny": true,
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"resolveJsonModule": true,
-		"baseUrl": ".",
-		"paths": {
-			"~/*": ["src/*"]
-		}
+		"baseUrl": "."
 	}
 }
