@@ -80,7 +80,7 @@ export class Project extends Singleton {
 		const {mode} = this._cliArgs;
 		const isDev = this.isDev() && mode === modes.Dev;
 		const isTest = this.isTest() && mode === modes.Test;
-		const isProd = this.isProd() && mode === modes.Dev;
+		const isProd = this.isProd() && mode === modes.Prod;
 
 		if (!isProd && !isTest && !isDev) {
 			throw new Error(`Invalid project configuration. The project has been started in "${mode}" mode, but .env is for "${this._env.MODE}" mode.`);
