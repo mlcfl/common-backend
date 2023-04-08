@@ -1,6 +1,6 @@
 import {join} from 'node:path';
 import express from 'express';
-import {ProjectRouter} from './ProjectRouter';
+import {ProjectRouter, ProjectRouterError} from './ProjectRouter';
 import {Project} from './services';
 import {Node, Project as TProject} from './types';
 
@@ -207,7 +207,7 @@ export const boot = (params: TProject.Boot): void => {
 				</div>
 			`);
 		} catch (e) {
-			// If application was not found
+			// If the application was not physically found during import
 			if (e instanceof Error && 'code' in e) {
 				const error = e as Node.Errors.SystemError;
 
@@ -215,6 +215,12 @@ export const boot = (params: TProject.Boot): void => {
 					res.status(404).send('( ﾉ ﾟｰﾟ)ﾉ 404 ＼(ﾟｰﾟ＼)');
 					return;
 				}
+			}
+
+			// If the application was not found in the applications array
+			if (e instanceof ProjectRouterError) {
+				res.status(404).send('( ﾉ ﾟｰﾟ)ﾉ 404 ＼(ﾟｰﾟ＼)');
+				return;
 			}
 
 			// Any other error
