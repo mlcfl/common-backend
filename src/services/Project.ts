@@ -73,6 +73,13 @@ export class Project extends Singleton {
 	}
 
 	/**
+	 * Is env host === localhost
+	 */
+	isLocalhost(): boolean {
+		return this._env.HOST === 'localhost';
+	}
+
+	/**
 	 * Compare env mode vs cli args mode
 	 */
 	private _compareConfigs(): void {

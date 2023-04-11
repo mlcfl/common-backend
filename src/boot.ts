@@ -1,30 +1,23 @@
-import {join} from 'node:path';
 import express from 'express';
 import {ProjectRouter, ProjectRouterError} from './ProjectRouter';
 import {Project} from './services';
-import {Node, Project as TProject} from './types';
+import {Project as TProject} from './types';
+import {setSubdomainsRoutes} from './boot/setSubdomainsRoutes';
+import {setDefaultRoute} from './boot/setDefaultRoute';
+import {subdomainNotFound} from './boot/subdomainNotFound';
 
 /**
  * Entry point to the entire project
  */
-export const boot = (params: TProject.Boot): void => {
+export const boot = async (params: TProject.Boot): Promise<void> => {
 	const project = Project.getInstance<Project>();
-	const router = ProjectRouter.getInstance<ProjectRouter>();
-	const server = express();
 
 	project.init(params);
-	const {env, config} = project;
-	router.setConfig(config);
 
-	server.set('subdomain offset', env.SUBDOMAIN_OFFSET);
+	const {env: {HOST, SERVER_PORT}} = project;
+	const server = express();
 
-	server.get('*', async (req, res) => {
-		try {
-			const {subdomains} = req;
-			const app = router.getApp(subdomains);
-			const pathRoot = join(import.meta.url, '../../../..');// TODO: move to Fs
-			const pathApp = join(pathRoot, `apps/${app}/${app}-backend/dist/index.js`);
-			const module = await import(pathApp);
+	server.set('subdomain offset', project.isLocalhost() ? 1 : 2);
 
 			const none = module.load();
 			console.log(`None is null for the application "${app}"? - ${none === null ? 'yes' : 'no'}`);
@@ -217,19 +210,12 @@ export const boot = (params: TProject.Boot): void => {
 				}
 			}
 
-			// If the application was not found in the applications array
-			if (e instanceof ProjectRouterError) {
-				res.status(404).send('( ﾉ ﾟｰﾟ)ﾉ 404 ＼(ﾟｰﾟ＼)');
-				return;
-			}
+	await setSubdomainsRoutes(server);
+	await setDefaultRoute(server);
 
-			// Any other error
-			console.error(e);
-			res.status(500).send('( ﾉ ﾟｰﾟ)ﾉ 500 ＼(ﾟｰﾟ＼)');
-		}
-	});
+	server.use(subdomainNotFound());
 
-	server.listen(env.SERVER_PORT, () => {
-		console.log(`Server listening on port ${env.SERVER_PORT}`);
+	server.listen(SERVER_PORT, () => {
+		console.log(`Server listening on port ${SERVER_PORT}`);
 	});
 };
