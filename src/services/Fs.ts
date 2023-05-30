@@ -24,14 +24,14 @@ export class Fs {
 	}
 
 	/**
-	 * Return the relative path from the root to the entry point for the application backend
+	 * Return the relative path from the root to the compiled entry point for the application backend
 	 */
 	static getBackendEntryPoint(app: string): string {
 		return `apps/${app}/${app}-backend/dist/index.js`;
 	}
 
 	/**
-	 * Return the relative path from the root to the entry point for the application frontend
+	 * Return the relative path from the root to the compiled entry point for the application frontend
 	 */
 	static getFrontendEntryPoint(app: string): string {
 		return `apps/${app}/${app}-frontend/dist/index.js`;
