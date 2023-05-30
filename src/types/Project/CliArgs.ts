@@ -11,4 +11,5 @@ export type CliArgs = {
 	readonly strict?: boolean;
 	readonly mode: Modes;
 	readonly watch?: boolean;// in "start:dev --watch" mode
+	readonly buildOnly?: 'frontend' | 'backend';
 };
