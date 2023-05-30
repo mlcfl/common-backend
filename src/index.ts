@@ -5,4 +5,5 @@
 export * as services from './services';
 export * as types from './types';
 export * as expressMiddlewares from './express-middlewares';
+export * as router from './router';
 export * as Controller from './Controller';
