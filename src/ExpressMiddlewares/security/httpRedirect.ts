@@ -1,11 +1,11 @@
-import {Request, Response, NextFunction} from 'express';
+import type {Request, Response, NextFunction} from 'express';
 
 /**
  * Enable HTTPS redirect for all HTTP requests
  *
  * Not used now, because on the production server proxy to http://localhost is used
  */
-export const middlewareHttpRedirect = () => (req: Request, res: Response, next: NextFunction) => {
+export const httpRedirect = () => (req: Request, res: Response, next: NextFunction) => {
 	const {secure, method, originalUrl, headers: {host}} = req;
 
 	if (secure) {

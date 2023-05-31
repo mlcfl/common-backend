@@ -1,11 +1,11 @@
-import {Request, Response, NextFunction} from 'express';
+import type {Request, Response, NextFunction} from 'express';
 
 /**
  * Prevent large payload attacks
  *
  * @param {number} maxLength The size of the message body, in bytes
  */
-export const middlewareContentLength = (maxLength: number) => (req: Request, res: Response, next: NextFunction): void => {
+export const contentLength = (maxLength: number) => (req: Request, res: Response, next: NextFunction): void => {
 	const {headers: {'Content-Length': contentLength}} = req;
 	const length = contentLength ? Number(contentLength) : 0;
 

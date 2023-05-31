@@ -17,7 +17,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import {Request, Response, NextFunction} from 'express';
+import type {Request, Response, NextFunction} from 'express';
 
 type Item = (string | RegExp)[];
 
@@ -65,7 +65,7 @@ const isAllowed = (headerValue?: string, allowedValues?: (string | RegExp)[]): b
  * @author https://github.com/brannondorsey/host-validation
  * @link https://www.npmjs.com/package/host-validation
  */
-export const middlewareDnsRebinding = (config: ConfigA | ConfigB | ConfigC) => {
+export const dnsRebinding = (config: ConfigA | ConfigB | ConfigC) => {
 	const {hosts, referers, onInvalid, mode = 'both'} = config;
 
 	if (!hosts && !referers) {
