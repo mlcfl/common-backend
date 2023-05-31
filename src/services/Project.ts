@@ -10,6 +10,8 @@ export class Project extends Singleton {
 	private _cliArgs!: TProject.CliArgs;
 	private _wasInited = false;
 
+	private _flatApps!: string[];
+
 	/**
 	 * Get env config
 	 */
@@ -31,6 +33,18 @@ export class Project extends Singleton {
 	 */
 	get cliArgs(): TProject.CliArgs {
 		return this._cliArgs;
+	}
+
+	/**
+	 * Return flat array of available applications
+	 */
+	get flatApps(): string[] {
+		if (this._flatApps) {
+			return this._flatApps;
+		}
+
+		const {apps} = this.config;
+		return this._flatApps = apps.map(app => typeof app === 'string' ? app : app[0]);
 	}
 
 	/**

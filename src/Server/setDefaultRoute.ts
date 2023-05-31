@@ -1,19 +1,20 @@
 import {join} from 'node:path';
-import {Express} from 'express';
+import type {Express} from 'express';
 import vhost from 'vhost';
-import {Project, Fs} from '~/services';
+import {Fs, type Project} from '~/services';
 
 /**
  * Check and init the default route (without subdomains)
  */
-export const setDefaultRoute = async (server: Express): Promise<void> => {
+export const setDefaultRoute = async (server: Express, project: Project): Promise<void> => {
 	const {
 		env: {HOST},
-		config: {apps, defaultApp},
-	} = Project.getInstance<Project>();
+		config: {defaultApp},
+		flatApps,
+	} = project;
 
-	if (!apps.includes(defaultApp)) {
-		throw new Error(`Invalid default application "${defaultApp}". Possible values: "${apps.join(', ')}".`);
+	if (!flatApps.includes(defaultApp)) {
+		throw new Error(`Invalid default application "${defaultApp}". Possible values: "${flatApps.join(', ')}".`);
 	}
 
 	const entry = Fs.getBackendEntryPoint(defaultApp);
@@ -24,5 +25,5 @@ export const setDefaultRoute = async (server: Express): Promise<void> => {
 	}
 
 	const {load} = await import(join(Fs.rootPathDi, entry));
-	server.use(vhost(HOST, load()));
+	server.use(vhost(HOST, await load(defaultApp)));
 };
