@@ -21,6 +21,8 @@
 		"hpp": "^0.2.3",
 		"i18next": "^22.4.10",
 		"routing-controllers": "^0.10.4",
-		"vhost": "^3.0.2"
+		"vhost": "^3.0.2",
+		"vue": "^3.3.4",
+		"vue-router": "^4.2.2"
 	}
 }
