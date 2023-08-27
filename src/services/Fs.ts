@@ -1,6 +1,6 @@
 import {cwd} from 'node:process';
 import {join} from 'node:path';
-import {access, constants} from 'node:fs/promises';
+import {access, constants, readFile} from 'node:fs/promises';
 
 /**
  * Work with the file system in the project
@@ -49,5 +49,21 @@ export class Fs {
 		} catch (e) {
 			return false;
 		}
+	}
+
+	/**
+	 * Get file content
+	 */
+	static async readFile(path: string): Promise<string> {
+		return await readFile(path, {encoding: 'utf-8'});
+	}
+
+	/**
+	 * Get parsed JSON file content
+	 */
+	static async readJsonFile<T>(path: string): Promise<T> {
+		const content = await readFile(path, {encoding: 'utf-8'});
+
+		return JSON.parse(content);
 	}
 }
